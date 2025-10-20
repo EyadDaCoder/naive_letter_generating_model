@@ -20,6 +20,5 @@ def main():
     print("This file isn't fully implemented so its just gonna start lol")
     i = 0
     while i != config['iterations']:
-        model.ai.generate()
-        model.ai.feedback()
+        model.ai.feedback(model.ai.generate())
         i += 1
