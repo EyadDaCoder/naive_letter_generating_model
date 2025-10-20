@@ -1,4 +1,4 @@
-# Knowledge of the model
+# This file is a backup for the default weights.
 
 POSITIONAL = {
     'a': [0.00, 0.00, 0.00, 0.00],

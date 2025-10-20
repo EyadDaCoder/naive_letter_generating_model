@@ -9,7 +9,8 @@ config = {
     'iterations': 100000,
     'freeze_training': False,
     'reset_weights': True,
-    'feed_forward_weights': False
+    'feed_forward_weights': False,
+    'version': '1.0.0'
 }
 
 def main():
@@ -19,6 +20,6 @@ def main():
     print("This file isn't fully implemented so its just gonna start lol")
     i = 0
     while i != config['iterations']:
-        model.ai.run()
+        model.ai.generate()
         model.ai.feedback()
         i += 1
