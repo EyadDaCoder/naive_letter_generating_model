@@ -3,7 +3,6 @@
 import random
 from dataset import dataset
 import weights
-import launcher
 
 class naive_word_generating_model:
     def __init__(self):
@@ -20,31 +19,42 @@ class naive_word_generating_model:
         self.vacant_letter_positions = [0, 1, 2, 3]
         self.generated_word = ""
         self.generated_position = 0
-        self.positional_weights_adjusted = []
+        self.positional_weights_adjusted = weights.POSITIONAL
         self.diff = []
         self.diff_count = 0
         self.gen_word_to_dataset_word_diff = []
 
     def generate(self):
+        print('generate')
         # Reset essential variables
         self.generated_word = ""
         self.vacant_letter_positions = [0, 1, 2, 3]
         self.word_l2 = ['', '', '', '']
         self.i = 0
-
-        self.word_l1 = random.choices(self.letters, weights=weights.GLOBAL, k=4) # generate the random letters
-
+        self.word_l1 = random.choices(self.letters, weights=weights.GLOBAL, k=4)
         self.positional_weights_adjusted = weights.POSITIONAL
         while self.i != 4:
-            self.generated_position = random.choices(self.vacant_letter_positions, weights=self.positional_weights_adjusted)
-            self.word_l2[self.generated_position] = self.word_l1[self.i]
-            self.vacant_letter_positions.remove(self.generated_position)
-            self.positional_weights_adjusted[self.word_l1[self.i]].remove(self.generated_position)
-            self.i += 1
+            self.generated_position = random.choices(self.vacant_letter_positions, weights=self.positional_weights_adjusted[self.word_l1[self.i]], k=1)
+            self.word_l2[self.generated_position[0]] = self.word_l1[self.i]
+            self.vacant_letter_positions.remove(self.generated_position[0])
+            for x in self.letters:
+                if len(self.positional_weights_adjusted[x]) == 4:
+                    del self.positional_weights_adjusted[x][self.generated_position[0]]
+                elif len(self.positional_weights_adjusted[x]) == 3:
+                    del self.positional_weights_adjusted[x][self.generated_position[0] - 1]
+                elif len(self.positional_weights_adjusted[x]) == 2:
+                    del self.positional_weights_adjusted[x][self.generated_position[0] - 2]
+                elif len(self.positional_weights_adjusted[x]) == 1:
+                    del self.positional_weights_adjusted[x][self.generated_position[0] - 3]
+                elif len(self.positional_weights_adjusted[x]) == 0:
+                    del self.positional_weights_adjusted[x][self.generated_position[0] - 4]
+
+
         self.generated_word = ''.join(self.word_l2)
         return self.generated_word
 
     def feedback(self, generated_word):
+        print('feedback')
         self.gen_word_to_dataset_word_diff = []
         for x in dataset:
             self.diff = list(zip(generated_word, x)) # create a side by side of the letters in every dataset word and the generated word.

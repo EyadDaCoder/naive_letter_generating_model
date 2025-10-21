@@ -6,19 +6,17 @@ import model
 cmd_list = ['start', 'config', 'info']
 
 config = {
-    'iterations': 100000,
+    'iterations': 1,
     'freeze_training': False,
     'reset_weights': True,
     'feed_forward_weights': False,
     'version': '1.0.0'
 }
-
-def main():
-    global cmd_list, config
-
-    print("Naive Letter Generating Model 1.0.0")
-    print("This file isn't fully implemented so its just gonna start lol")
-    i = 0
-    while i != config['iterations']:
-        model.ai.feedback(model.ai.generate())
-        i += 1
+print(model.__file__)
+print("Naive Letter Generating Model 1.0.0")
+print("This file isn't fully implemented so its just gonna start lol")
+ai = model.naive_word_generating_model()
+i = 0
+while i != config['iterations']:
+    ai.feedback(ai.generate())
+    i += 1
